@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
+<div class="row col-12 p-">
+    <div class="col-12">
+        <h2>All Courses on Magical eLearning</h2>
+    </div>
+</div>
+{% for course in courses %}
+<div class="row col-6">
+    <div class="col-4">
+        {{ course.name }}
+    </div>
+    <div class="col-6">
+        {{ course.course }}
+    </div>
+</div>
+{% endfor %}
+</div>
+
+{% endblock %}

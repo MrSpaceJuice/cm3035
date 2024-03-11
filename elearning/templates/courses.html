@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
+{% if user.profile.teacher %}
+<div class="row col-12 p-1">
+    <div class="">
+        <h2>Instructor Courses</h2>
+    </div>
+</div>
+{% for t_course in teacher_courses %}
+<div class="row p-1">
+    <a href="courses/{{ t_course.id }}">{{ t_course.name }}</a>
+</div>
+{% endfor %}
+<div class="row p-1">
+    <a href="courses/create/" class="btn btn-primary">Create a New Course</a>
+</div>
+<br/>
+{% endif %}
+<div class="row col-12 p-">
+    <div class="col-12">
+        <h2>Courses available for you</h2>
+    </div>
+</div>
+<div class="row col-6 p-1">
+    <div class="col-3 my-auto">
+        <strong>Course Name</strong>
+    </div>
+    <div class="col-3 my-auto">
+        <strong>Course Code</strong>
+    </div>
+    <div class="col-3 my-auto">
+
+    </div>
+</div>
+{% for course in courses %}
+<div class="row col-6 p-1">
+    <div class="col-3 my-auto">
+        {{ course.name }}
+    </div>
+    <div class="col-3 my-auto">
+        {{ course.course }}
+    </div>
+    <div class="col-3 my-auto">
+        <!-- If user is logged in, shows the button to enroll in a class based on user and course id -->
+        {% if user.is_authenticated %}
+        <form action="/enroll/" method="post" class="form">
+            {% csrf_token %}
+            <input type="hidden" name="user" value="{{ user.id }}" />
+            <input type="hidden" name="course" value="{{ course.id }}" />
+            <input type="submit" class="btn btn-primary" value="Enroll">
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
+<div class="row col-12 p-">
+    <div class="col-6">
+        <h2>Teachers</h2>
+    </div>
+    {% for teacher in teachers %}
+    <div class="row col-12">
+        <div class="col-4">
+            <a href="/user/{{teacher.id}}">{{ teacher.first_name }} {{ teacher.last_name }}</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

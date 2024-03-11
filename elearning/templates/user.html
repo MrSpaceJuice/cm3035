@@ -1,0 +1,86 @@
+{% extends "./base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div>
+    <p>
+    <h1>{{ users.first_name }} {{ users.last_name }}</h1>
+    </p>
+    <!-- If the logged in user is the owner of the homepage, -->
+    <!-- they can update their status. -->
+    <img src="{{ users.profile.picture.url }}" width="150px" height="150px">
+    {% if user.id == users.id %}
+    
+    <div class="row col-6">
+        <form class="row gy-2 gx-3" action="/user/{{ user.id }}" method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form status_form %}
+            <div class="form-group row">
+                <input type="submit" value="Update">
+            </div>
+        </form>
+    </div>
+    {% else %}
+    <i>{{ user_profile.status }}</i>
+    {% endif %}
+
+    <p>
+    </p>
+
+    <p>
+    <h2>Enrolled Courses</h2>
+    <table class="table">
+        <thead class="thead-light" id="enrolled_courses">
+            <tr>
+                <th>Course</th>
+                <th>Instructor</th>
+                <th>Feedback</th>
+                <th></th>
+            </tr>
+        </thead>
+        <!-- Shows each course/teacher name and student's feedback -->
+        <!-- If user is the owner of that homepage, they can edit feedback -->
+        {% for course in courses %}
+        <tr>
+            <td>{{ course.course.name }}</td>
+            <td>{{ course.course.teacher.first_name }} {{ course.course.teacher.last_name }} </td>
+            <td>{{ course.feedback }}</td>
+            
+                {% if user.id == users.id %}
+                <form id="feedback_form" action="/feedback/" method="post" class="form">
+                    {% csrf_token %}
+                    <td>
+                    <input type="input" name="feedback" />
+                </td>
+                <td>
+                    <input type="hidden" name="user" value="{{ course.user.id }}" />
+                    <input type="hidden" name="course" value="{{ course.course.id }}" />
+                    <input type="submit" class="btn btn-primary" value="Post Feedback">
+                </td>
+                </form>
+                {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+    </p>
+    <p>
+    <h2>Upcoming Deadlines</h2>
+    <table class="table">
+        <thead class="thead-light" id="enrolled_courses">
+            <tr>
+                <th>Course</th>
+                <th>Instructor</th>
+                <th>Feedback</th>
+            </tr>
+        </thead>
+        {% for j in deadlines %}
+        <tr>
+            <td>{{ j.course.name }}</td>
+            <td>{{ j.event }} </td>
+            <td>{{ j.event_date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </p>
+</div>
+{% endblock %}

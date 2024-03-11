@@ -1,0 +1,51 @@
+{% load bootstrap4 %}
+{% load static %}
+
+<nav class="navbar navbar-expand-md sticky-top flex-column">
+  <div class="w-100 d-flex">
+    <div class="navbar-header" id="header">
+      <img src="{% static 'logo.png' %}" id="logo" alt="wizard logo" width="70px" height="70px">
+      <h1 id="application_title">Magic eLearning</h1>
+    </div>
+  </div>
+</nav>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="nav-item ml-5">
+    {% if user.is_authenticated %}
+    <a class="navbar-brand col-3" href="/">Hello, {{ user.first_name }}!</a>
+    {% else %}
+    <a class="navbar-brand col-3" href="/"></a>
+    {% endif %}
+  </div>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+
+      <!-- If logged in, set home to the user's homepage -->
+      <!-- Otherwise send them to the main home -->
+      {% if user.is_authenticated %}
+      <a class="nav-item nav-link active" href="/user/{{ user.id }}">Home <span class="sr-only">(current)</span></a>
+      {% else %}
+      <a class="nav-item nav-link active" href="/">Home<span class="sr-only">(current)</span></a>
+      {% endif %}
+
+      <!-- Teacher list only available to other teachers -->
+      {% if user.profile.teacher %}
+      <a class="nav-item nav-link" href="/teachers">Teachers</a>
+      {% endif %}
+
+      <a class="nav-item nav-link" href="/students">Students</a>
+      <a class="nav-item nav-link" href="/courses">Courses</a>
+      <a class="nav-item nav-link" href="/chat">Chat</a>
+      {% if user.is_authenticated %}
+      <a class="navbar-brand" href="/logout/">Logout</a>
+      {% else %}
+      <a class="navbar-brand" href="/login/">Login</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
